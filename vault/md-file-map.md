@@ -125,6 +125,11 @@ Complete reference of every Markdown file in the project.
 - **משויך ל:** `test-driven-development/SKILL.md`
 - **קבצים קשורים:** `test-driven-development/SKILL.md`
 
+### `.claude/skills/using-git-worktrees/SKILL.md`
+- **מה הוא עושה:** סקיל להקמת workspace מבודד — מזהה אם כבר קיים worktree, עדיפות לכלים native, fallback ל-git worktree ידני.
+- **משויך ל:** תחילת עבודה על פיצ'ר שדורש בידוד מה-workspace הנוכחי
+- **קבצים קשורים:** `executing-plans/SKILL.md`, `finishing-a-development-branch/SKILL.md`
+
 ### `.claude/skills/using-superpowers/SKILL.md`
 - **מה הוא עושה:** סקיל bootstrap — נטען בתחילת כל שיחה ומגדיר כיצד למצוא ולהשתמש בשאר הסקילים.
 - **משויך ל:** כל הסקילים
