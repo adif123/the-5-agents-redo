@@ -1,0 +1,217 @@
+{
+  "main": {
+    "id": "1b625179600c60a4",
+    "type": "split",
+    "children": [
+      {
+        "id": "43aae1742651f53e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9b5118b19e9b870d",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9732aec52ea4dbb9",
+    "type": "split",
+    "children": [
+      {
+        "id": "646222e3c6c27fe7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8b35a7abe1e03fc7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "2ae5c2b582515649",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "6af017f418480ba4",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "ebd6da7499ea9470",
+    "type": "split",
+    "children": [
+      {
+        "id": "e0a173d07c102d71",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5bdfa307e4dd5fa4",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "d4b32d5f1f5b2448",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "41c4843f13e9fc4b",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "bcb38a5760fa82b6",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "365ef92cef2e4106",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "9b5118b19e9b870d",
+  "lastOpenFiles": [
+    "vault/Skills/_index.md",
+    "vault/Meeting Notes/skills-vault-documentation.md",
+    "vault/Skills/obsidian-bases.md",
+    "vault/Skills/obsidian-markdown.md",
+    "vault/Skills/obsidian-vault-workflow.md",
+    "vault/Skills/writing-skills.md",
+    "vault/Skills/writing-plans.md",
+    "vault/Skills/verification-before-completion.md",
+    "vault/Skills/using-superpowers.md",
+    "vault/Skills/using-git-worktrees.md",
+    "vault/Skills/test-driven-development.md",
+    "vault/Skills/systematic-debugging.md",
+    "vault/Skills/subagent-driven-development.md",
+    "vault/Skills/requesting-code-review.md",
+    "vault/Skills/receiving-code-review.md",
+    "vault/Skills/finishing-a-development-branch.md",
+    "vault/Skills/executing-plans.md",
+    "vault/Skills/dispatching-parallel-agents.md",
+    "vault/Skills/brainstorming.md",
+    "vault/Skills",
+    "vault/Meeting Notes/project-documentation-scan.md.tmp.26800.74a70fa0f10a",
+    "CLAUDE.md",
+    "vault/Meeting Notes/project-documentation-scan.md",
+    "vault/md-file-map.md",
+    "vault/Meeting Notes/project-setup.md",
+    "vault/Meeting Notes/project-documentation-scan.md.tmp.26800.d7b48266e02f",
+    "vault/Publishing Log/_index.md",
+    "vault/Publishing Log",
+    "vault/Brand Guidelines/_index.md",
+    "vault/Brand Guidelines",
+    "vault/Content Briefs/_index.md",
+    "vault/Content Briefs",
+    "vault/Meeting Notes",
+    "vault",
+    "New folder"
+  ]
+}
