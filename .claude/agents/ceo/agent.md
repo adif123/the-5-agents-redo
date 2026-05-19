@@ -47,7 +47,7 @@ Each agent runs in its own context window and returns a single result.
 |--------|-------|-----------------------------|-------------------------------|-------------|
 | AGT-01 | יעל   | `.claude/agents/yael.md`    | שכתוב ועריכת מאמרים בסגנון בית | ✅ Active   |
 | AGT-02 | יובל  | `.claude/agents/yuval.md`   | עיצוב ויצירת תמונות            | ✅ Active   |
-| AGT-03 | [TBD] | `.claude/agents/[TBD].md`   | [TBD]                         | ⏳ Pending  |
+| AGT-03 | חן    | `.claude/agents/chen.md`    | מחקר רשת ומציאת מקורות איכותיים | ✅ Active   |
 | AGT-04 | [TBD] | `.claude/agents/[TBD].md`   | [TBD]                         | ⏳ Pending  |
 
 > When a sub-agent is added, update this table AND add the corresponding
@@ -55,12 +55,19 @@ Each agent runs in its own context window and returns a single result.
 
 ## Routing Rules
 
+- If task involves **finding / researching content on the web** (`חפש, מצא, מחקר, מאמר על, חדש על, מקור על / search, find, research, article about, latest on, news on`) → invoke **חן (AGT-03)**. חן saves to `Content/` and reports back.
 - If task involves **rewriting / editing / translating / summarizing an article** (`שכתב, ערוך, נסח מחדש, תרגם, סכם, מאמר, תוכן, פוסט / rewrite, edit, rephrase, translate, summarize, article, content, post`) → invoke **יעל (AGT-01)** with the source filename from `Content/`. יעל returns MD+HTML in `Output/`.
 - If task involves **image generation / illustration** (`תמונה של, ציור של, תיצור תמונה, איור / image of, picture of, generate image, illustration, draw`) → invoke **יובל (AGT-02)**
-- If task involves **both rewriting AND images** → invoke **יעל (AGT-01)** first for the rewrite; then invoke **יובל (AGT-02)** separately for each requested image; CEO presents both outputs to the user. The two agents do NOT directly communicate — CEO orchestrates.
+- **Composite flows** — CEO orchestrates the sequence based on the **original user request**, not on any sub-agent's output (sub-agents do not chain to each other):
+  - "find + rewrite about X" → חן → CEO presents result → יעל (on the file חן created)
+  - "find + rewrite + images about X" → חן → יעל → יובל (CEO invokes יובל based on the original "images" intent in the user's request)
+  - "find me an article about X" → חן only; CEO stops and presents the source to the user
+  - "rewrite AND images" (no research) → יעל → יובל (CEO invokes both based on user intent)
 - If task is purely **CEO-domain** (parsing, planning, routing decisions, synthesis) → handle directly without sub-agent invocation
 
 For unregistered task types: best-effort match to closest sub-agent. If no match and within CEO capability, handle directly. Otherwise report the limitation.
+
+**Important — image-flow trigger:** Whether to invoke יובל is determined by **the original user request** ("create images", "with illustrations", explicit image keywords). יעל no longer leaves IMAGE_NEEDED placeholders and does not request images — CEO must infer image intent before יעל runs, and dispatch יובל in parallel or after יעל as appropriate.
 
 ## Execution Protocol
 
