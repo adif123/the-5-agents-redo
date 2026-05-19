@@ -5,5 +5,6 @@
 ## Topics
 
 - [[project-overview]] — ארכיטקטורת המערכת הכללית: CEO orchestrator + multi-agent content creation
+- [[ceo-agent]] — ה-CEO Agent: contract, routing protocol, sub-agent registry, language rules
 - [[claude-configuration]] — מבנה .claude/, settings.json, plugin מותקן
 - [[skills-roster]] — רשימת כל 16 ה-skills המותקנות ותיאורן
