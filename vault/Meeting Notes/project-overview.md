@@ -1,7 +1,7 @@
 # Project Overview
 
 ## Overview
-מערכת יצירת תוכן מרובת-סוכנים (multi-agent content-creation system). סוכן CEO ראשי מתפקד כאורכסטרטור ומתאם צוות של sub-agents מתמחים. נכון ל-2026-05-19: AGT-01 יעל (כתיבת תוכן) ו-AGT-02 יובל (עיצוב תמונות) פעילים. תהליך מלא ליצירת מאמר עם תמונות מוגדר ועובד. המערכת משתמשת ב-Anthropic API (Claude) לאורכסטרציה וכתיבה, ו-OpenAI API (gpt-image-2) ליצירת תמונות.
+מערכת יצירת תוכן מרובת-סוכנים (multi-agent content-creation system). סוכן CEO ראשי מתפקד כאורכסטרטור ומתאם צוות של sub-agents מתמחים. נכון ל-2026-05-19: AGT-01 יעל (משכתבת מאמרים) ו-AGT-02 יובל (יצירת תמונות) פעילים. יעל לוקחת מאמרי גלם מ-`Content/`, משכתבת לפי `yael/style-guide.md`, ושומרת MD+HTML ב-`Output/`. יובל יוצר תמונות דרך OpenAI Images API (`gpt-image-2`). הסוכנים לא מתקשרים ישירות — CEO מתזמן כל אחד בנפרד.
 
 ## Open Questions
 - AGT-03 ו-AGT-04: שמות ותחומים טרם הוגדרו
@@ -26,3 +26,9 @@
 - **Decisions:** ה-CEO הוא ה-main Claude session ולא sub-agent נפרד — דפוס supervisor סטנדרטי. ה-contract בקובץ נפרד (לא inline ב-CLAUDE.md) כדי לאפשר עדכון עצמאי. רישום AGT-01..AGT-04 נשאר `[TBD]` בכוונה.
 - **Notes / Caveats:** ה-contract באנגלית, אך Language Rules מחייבות תשובות בעברית מלאה כשה-input בעברית. `.claude/agents/` עדיין ריק — sub-agents ייווצרו אינקרמנטלית.
 - **Related:** [[ceo-agent]], [[claude-configuration]]
+
+### 2026-05-19 — יעל pivot למשכתבת + Content/ + Output/ נוצרו [shipped]
+- **What was done:** ה-scope של יעל שונה לחלוטין: ממסכ"לית "כותבת מאפס עם image placeholders" ל"משכתבת מאמרי גלם בסגנון בית". `.claude/agents/yael.md` נכתב מחדש עם כלים מצומצמים (Read/Write/Edit/Glob/Grep — בלי Bash). נוצרה תשתית: `Content/` (מאמרי גלם), `Output/` (פלט), `yael/style-guide.md` (placeholder TODO), `yael/reference/`. CLAUDE.md עודכן: trigger keywords חדשים (שכתב/ערוך/תרגם/סכם), workflow "שכתוב מאמר" החליף את "מאמר עם תמונות". CEO routing rules עודכנו בהתאם.
+- **Decisions:** יעל ויובל לא מתקשרים ישירות — CEO מתזמן בנפרד. אם יבקשו מאמר עם תמונות, CEO יפעיל את יעל ואת יובל בקריאות נפרדות ויציג שני outputs. ה-style-guide נשאר placeholder ריק — המשתמש ימלא אותו בנפרד.
+- **Notes / Caveats:** ה-trigger keywords של יעל חופפים חלקית לקודמים (`מאמר`, `תוכן`) אבל הסמנטיקה שונה — יעל לא יוצרת תוכן חדש. בקשות כתיבה מאפס לא ימופו לסוכן קיים.
+- **Related:** [[yael-agent]], [[ceo-agent]]
