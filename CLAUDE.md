@@ -21,19 +21,19 @@ The CEO contract defines: identity, sub-agent registry, routing rules, execution
 
 | Agent | File | Domain | Trigger Keywords |
 |-------|------|--------|-----------------|
-| יעל | `.claude/agents/yael.md` | כתיבת מאמרים ותוכן | מאמר, תוכן, כתוב, בלוג / article, write, content, blog post |
+| יעל | `.claude/agents/yael.md` | שכתוב ועריכת מאמרים בסגנון בית | שכתב, ערוך, נסח מחדש, תרגם, סכם, מאמר, תוכן, פוסט / rewrite, edit, rephrase, translate, summarize, article, content, post |
 | יובל | `.claude/agents/yuval.md` | עיצוב ויצירת תמונות | תמונה של, ציור של, תיצור תמונה, איור / image of, picture of, generate image, illustration, draw |
 
-## Workflow: מאמר עם תמונות (תהליך מלא)
+## Workflow: שכתוב מאמר
 
-כשמקבל בקשה ליצירת מאמר עם תמונות:
+כשמקבל בקשה לשכתוב מאמר:
 
-1. **CEO מפעיל את יעל** לכתוב את המאמר
-2. **יעל מחזירה** את תוכן המאמר + רשימת `{{IMAGE_NEEDED: "..."}}` placeholders שהשאירה
-3. **CEO מפעיל את יובל** עם ה-prompts מרשימת ה-placeholders של יעל (אחת-אחת, ברצף)
-4. **יובל מחזיר** paths לתמונות שנוצרו (`yuval/outputs/<YYYY-MM-DD>-<slug>.png`)
-5. **CEO משלב** את התמונות בקבצי MD ו-HTML של יעל — מחליף כל placeholder ב-`![alt](path)`
-6. **CEO שומר** את הגרסה הסופית ב-`Output/`
+1. **CEO מפעיל את יעל** עם שם הקובץ ב-`Content/`
+2. **יעל קוראת** את `yael/style-guide.md` ואת `yael/reference/` (פעם אחת בסשן), משכתבת לפי הסגנון, ומסירה קישורים/CTAs של המחבר המקורי
+3. **יעל שומרת** `Output/<name>.md` + `Output/<name>.html` ומדווחת ל-CEO סיכום + שינויים מרכזיים
+4. **CEO מציג** את הפלט למשתמש
+
+> **הערה:** יעל היא משכתבת בלבד — היא לא יוצרת תמונות ולא מפעילה sub-agents. לצורך תמונות, CEO מנתב במפורש ליובל בבקשה נפרדת.
 
 ## Project-Specific Claude Configuration
 
@@ -51,12 +51,16 @@ The `.claude/` directory contains customizations for this project:
 .claude/
   agents/
     ceo/          ← CEO contract (folder form, not auto-discovered)
-    yael.md       ← content writer sub-agent
+    yael.md       ← content rewriter sub-agent
     yuval.md      ← image designer sub-agent
   skills/
     gpt-image-gen/  ← OpenAI Images API wrapper
     ...
-Output/           ← final article outputs (MD + HTML)
+Content/          ← raw articles awaiting rewrite (input for יעל)
+Output/           ← rewritten articles (MD + HTML, output from יעל)
+yael/
+  style-guide.md  ← house style guide (יעל reads at session start)
+  reference/      ← example texts in our style
 yuval/
   reference/      ← style reference images (add manually)
   outputs/        ← generated images: <YYYY-MM-DD>-<slug>.png + .txt

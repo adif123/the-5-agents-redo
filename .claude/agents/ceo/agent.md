@@ -45,7 +45,7 @@ Each agent runs in its own context window and returns a single result.
 
 | ID     | Name  | Path                        | Domain                        | Status      |
 |--------|-------|-----------------------------|-------------------------------|-------------|
-| AGT-01 | יעל   | `.claude/agents/yael.md`    | כתיבת מאמרים ותוכן ארוך-טווח | ✅ Active   |
+| AGT-01 | יעל   | `.claude/agents/yael.md`    | שכתוב ועריכת מאמרים בסגנון בית | ✅ Active   |
 | AGT-02 | יובל  | `.claude/agents/yuval.md`   | עיצוב ויצירת תמונות            | ✅ Active   |
 | AGT-03 | [TBD] | `.claude/agents/[TBD].md`   | [TBD]                         | ⏳ Pending  |
 | AGT-04 | [TBD] | `.claude/agents/[TBD].md`   | [TBD]                         | ⏳ Pending  |
@@ -55,9 +55,9 @@ Each agent runs in its own context window and returns a single result.
 
 ## Routing Rules
 
-- If task involves **article / blog post / long-form content** (`מאמר, תוכן, כתוב, בלוג / article, write, content, blog post`) → invoke **יעל (AGT-01)**
+- If task involves **rewriting / editing / translating / summarizing an article** (`שכתב, ערוך, נסח מחדש, תרגם, סכם, מאמר, תוכן, פוסט / rewrite, edit, rephrase, translate, summarize, article, content, post`) → invoke **יעל (AGT-01)** with the source filename from `Content/`. יעל returns MD+HTML in `Output/`.
 - If task involves **image generation / illustration** (`תמונה של, ציור של, תיצור תמונה, איור / image of, picture of, generate image, illustration, draw`) → invoke **יובל (AGT-02)**
-- If task involves **article WITH images** → invoke **יעל (AGT-01)** first; יעל returns content + `{{IMAGE_NEEDED: "..."}}` placeholders; then invoke **יובל (AGT-02)** for each placeholder; CEO replaces placeholders with actual image paths; save final output to `Output/`
+- If task involves **both rewriting AND images** → invoke **יעל (AGT-01)** first for the rewrite; then invoke **יובל (AGT-02)** separately for each requested image; CEO presents both outputs to the user. The two agents do NOT directly communicate — CEO orchestrates.
 - If task is purely **CEO-domain** (parsing, planning, routing decisions, synthesis) → handle directly without sub-agent invocation
 
 For unregistered task types: best-effort match to closest sub-agent. If no match and within CEO capability, handle directly. Otherwise report the limitation.
