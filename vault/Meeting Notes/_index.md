@@ -9,5 +9,6 @@
 - [[chen-agent]] — חן (AGT-03): סוכנת מחקר רשת, WebSearch+WebFetch, search memory, output ל-Content/
 - [[yael-agent]] — יעל (AGT-01): סוכנת שכתוב מאמרים, פלט MD+HTML ל-Output/
 - [[yuval-agent]] — יובל (AGT-02): סוכן יצירת תמונות, gpt-image-gen, reference style consistency
+- [[guy-agent]] — גיא (AGT-04): סוכן QA, שומר הסף האחרון, דוחות ב-`guy/QA_Reports/`, לולאת 3 סבבים
 - [[claude-configuration]] — מבנה .claude/, settings.json, plugin מותקן
 - [[skills-roster]] — רשימת כל ה-skills המותקנות ותיאורן

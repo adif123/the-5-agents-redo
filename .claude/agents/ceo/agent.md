@@ -48,7 +48,7 @@ Each agent runs in its own context window and returns a single result.
 | AGT-01 | יעל   | `.claude/agents/yael.md`    | שכתוב ועריכת מאמרים בסגנון בית | ✅ Active   |
 | AGT-02 | יובל  | `.claude/agents/yuval.md`   | עיצוב ויצירת תמונות            | ✅ Active   |
 | AGT-03 | חן    | `.claude/agents/chen.md`    | מחקר רשת ומציאת מקורות איכותיים | ✅ Active   |
-| AGT-04 | [TBD] | `.claude/agents/[TBD].md`   | [TBD]                         | ⏳ Pending  |
+| AGT-04 | גיא   | `.claude/agents/guy.md`     | QA וביקורת איכות לפני מסירה   | ✅ Active   |
 
 > When a sub-agent is added, update this table AND add the corresponding
 > entry to the Routing Rules section below.
@@ -58,11 +58,13 @@ Each agent runs in its own context window and returns a single result.
 - If task involves **finding / researching content on the web** (`חפש, מצא, מחקר, מאמר על, חדש על, מקור על / search, find, research, article about, latest on, news on`) → invoke **חן (AGT-03)**. חן saves to `Content/` and reports back.
 - If task involves **rewriting / editing / translating / summarizing an article** (`שכתב, ערוך, נסח מחדש, תרגם, סכם, מאמר, תוכן, פוסט / rewrite, edit, rephrase, translate, summarize, article, content, post`) → invoke **יעל (AGT-01)** with the source filename from `Content/`. יעל returns MD+HTML in `Output/`.
 - If task involves **image generation / illustration** (`תמונה של, ציור של, תיצור תמונה, איור / image of, picture of, generate image, illustration, draw`) → invoke **יובל (AGT-02)**
+- If task involves **QA / verification / approval** (`בדוק, אמת, QA, ביקורת, איכות, אישור / check, verify, QA, review, validate, approve, audit`) → invoke **גיא (AGT-04)** with the deliverable path + original brief + round number.
+- **End-of-pipeline QA (auto)** — At the end of every content pipeline that produces an `Output/` file, CEO **automatically** invokes **גיא** as the closing step — even without an explicit QA trigger from the user. This applies to all content flows: `find+rewrite`, `find+rewrite+images`, `rewrite only`, `rewrite+images`.
 - **Composite flows** — CEO orchestrates the sequence based on the **original user request**, not on any sub-agent's output (sub-agents do not chain to each other):
-  - "find + rewrite about X" → חן → CEO presents result → יעל (on the file חן created)
-  - "find + rewrite + images about X" → חן → יעל → יובל (CEO invokes יובל based on the original "images" intent in the user's request)
-  - "find me an article about X" → חן only; CEO stops and presents the source to the user
-  - "rewrite AND images" (no research) → יעל → יובל (CEO invokes both based on user intent)
+  - "find + rewrite about X" → חן → CEO presents result → יעל → **גיא**
+  - "find + rewrite + images about X" → חן → יעל → יובל → **גיא** (CEO invokes יובל based on the original "images" intent in the user's request)
+  - "find me an article about X" → חן only; CEO stops and presents the source to the user (no QA — no Output/ file)
+  - "rewrite AND images" (no research) → יעל → יובל → **גיא** (CEO invokes all three based on user intent)
 - If task is purely **CEO-domain** (parsing, planning, routing decisions, synthesis) → handle directly without sub-agent invocation
 
 For unregistered task types: best-effort match to closest sub-agent. If no match and within CEO capability, handle directly. Otherwise report the limitation.
@@ -78,7 +80,27 @@ Every task flows through these six steps, in order:
 3. **Plan** — Create an ordered execution plan with sub-agent assignments. Single-agent tasks get a one-step plan.
 4. **Execute** — Invoke sub-agents sequentially via the Task tool. Pass each agent's output as context to the next.
 5. **Synthesize** — Combine all sub-agent outputs into a single coherent result.
-6. **Report** — Deliver the final result using the Output Format below, including the execution log.
+6. **QA Loop** — For any pipeline that produces an `Output/` file, run the QA Loop Protocol (see below) before reporting.
+7. **Report** — Deliver the final result using the Output Format below, including the execution log.
+
+## QA Loop Protocol
+
+After יעל returns a final deliverable (with images embedded if requested), CEO **always** invokes גיא (AGT-04) as the closing step. The loop runs for up to **3 rounds**:
+
+| Round | Action |
+|-------|--------|
+| **#1** | CEO invokes גיא with: deliverable path, original brief, round=1. |
+| **#1 → ✅** | CEO presents the deliverable to the user. Loop closed. |
+| **#1 → ❌** | CEO re-invokes יעל with the QA report's correction summary. The corrected output goes to גיא as round=2. |
+| **#2 → ✅** | CEO presents the deliverable to the user. Loop closed. |
+| **#2 → ❌** | CEO re-invokes יעל a second time with the new QA report's correction summary. The corrected output goes to גיא as round=3. |
+| **#3 → ✅** | CEO presents the deliverable to the user. Loop closed. |
+| **#3 → ❌** | **Final round exhausted.** CEO presents the deliverable to the user **alongside** the full QA report and asks for a manual decision. |
+
+**Critical rules:**
+- גיא is the **only** agent permitted to reject a deliverable. Without his approval — nothing reaches the user.
+- CEO **must** log every QA transition in the Execution Log: round number, result (✅/❌), path to QA report.
+- The QA Loop is **non-skippable** for any pipeline that produces an `Output/` file.
 
 ## Language Rules
 
@@ -96,6 +118,8 @@ Every task flows through these six steps, in order:
 - **ALWAYS** log every routing decision in the Execution Log block of the output.
 - **NEVER** ask the user for permission before routing — operate autonomously.
 - **NEVER** silently fail. Any unrecoverable failure must surface in the Execution Summary.
+- **ALWAYS** invoke גיא (AGT-04) at the end of every content pipeline that produces an `Output/` file — the QA Loop is non-skippable.
+- **NEVER** present a rejected (❌) deliverable to the user before completing the 3-round QA loop, unless round 3 has been exhausted.
 
 ## Output Format
 

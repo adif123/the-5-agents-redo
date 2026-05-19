@@ -24,6 +24,7 @@ The CEO contract defines: identity, sub-agent registry, routing rules, execution
 | חן | `.claude/agents/chen.md` | מחקר רשת ומציאת מקורות איכותיים | חפש, מצא, מחקר, מאמר על, חדש על, מקור על / search, find, research, article about, latest on, news on |
 | יעל | `.claude/agents/yael.md` | שכתוב ועריכת מאמרים בסגנון בית | שכתב, ערוך, נסח מחדש, תרגם, סכם, מאמר, תוכן, פוסט / rewrite, edit, rephrase, translate, summarize, article, content, post |
 | יובל | `.claude/agents/yuval.md` | עיצוב ויצירת תמונות | תמונה של, ציור של, תיצור תמונה, איור / image of, picture of, generate image, illustration, draw |
+| גיא | `.claude/agents/guy.md` | QA וביקורת איכות לפני מסירה | בדוק, אמת, QA, ביקורת, איכות, אישור / check, verify, QA, review, validate, approve, audit |
 
 ## Workflow: מציאת תוכן באינטרנט (תהליך מלא)
 
@@ -49,6 +50,19 @@ The CEO contract defines: identity, sub-agent registry, routing rules, execution
 
 > **הערה ארכיטקטונית:** הסוכנים לא מפעילים זה את זה ישירות. CEO הוא המתזמן היחיד. אם המשתמש ביקש תמונות בבקשה המקורית — CEO יזכור זאת ויפעיל את יובל בנפרד אחרי יעל.
 
+## Workflow: QA Loop (סגירת לולאה)
+
+**גיא רץ אוטומטית בסוף כל pipeline תוכן שמסתיים בקובץ ב-`Output/`** — גם בלי trigger מפורש מהמשתמש.
+
+1. **CEO מפעיל את גיא** עם: path לתוצר ב-`Output/`, הבריף המקורי, מספר סבב (1/2/3).
+2. **גיא קורא** את התוצר, מאמת מול 5 קטגוריות (רלוונטיות, סגנון, מבנה, תמונות, שלמות טכנית), ומפיק דוח ב-`guy/QA_Reports/`.
+3. **גיא מחזיר** ל-CEO: ✅ מאושר או ❌ דורש תיקון + path לדוח + תקציר ההערות.
+4. **אם ✅** → CEO מציג את התוצר למשתמש. סוף.
+5. **אם ❌** → CEO מפעיל את יעל מחדש עם תקציר ההערות של גיא, ואז מחזיר את התוצר המתוקן לגיא **בסבב הבא**.
+6. **סבב 3** הוא הסבב האחרון: אם גם בסבב 3 גיא דוחה — CEO מציג למשתמש את התוצר עם דוח ה-QA המלא ומבקש החלטה ידנית.
+
+> **חוק חשוב:** גיא הוא הסוכן היחיד שמורשה לדחות תוצר. ללא אישור גיא — שום דבר לא יוצא למשתמש.
+
 ## Project-Specific Claude Configuration
 
 The `.claude/` directory contains customizations for this project:
@@ -57,6 +71,7 @@ The `.claude/` directory contains customizations for this project:
 - `.claude/agents/chen.md` — חן, חוקרת רשת (single-file, Task-invokable)
 - `.claude/agents/yael.md` — יעל, משכתבת תוכן (single-file, Task-invokable)
 - `.claude/agents/yuval.md` — יובל, מעצב תמונות (single-file, Task-invokable)
+- `.claude/agents/guy.md` — גיא, QA וסגירת לולאה (single-file, Task-invokable)
 - `.claude/skills/` — reusable skill files invokable via slash commands
 - `.claude/commands/` — custom slash commands for project workflows
 
@@ -69,6 +84,7 @@ The `.claude/` directory contains customizations for this project:
     chen.md       ← web research sub-agent
     yael.md       ← content rewriter sub-agent
     yuval.md      ← image designer sub-agent
+    guy.md        ← QA sub-agent (final gatekeeper)
   skills/
     gpt-image-gen/  ← OpenAI Images API wrapper
     ...
@@ -83,5 +99,8 @@ yael/
 yuval/
   reference/      ← style reference images (add manually)
   outputs/        ← generated images: <YYYY-MM-DD>-<slug>.png + .txt
+guy/
+  agent.md        ← pointer doc for humans
+  QA_Reports/     ← QA reports log: <YYYY-MM-DD-HHMM>-<slug>.md
 vault/            ← Obsidian vault (project documentation)
 ```
