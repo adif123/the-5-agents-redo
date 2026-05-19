@@ -1,14 +1,12 @@
 # CEO Agent
 
 ## Overview
-ה-CEO Agent הוא ה-root orchestrator של המערכת multi-agent. ה-contract שלו חי ב-`.claude/agents/ceo/agent.md` (folder form, מתחת ל-`.claude/agents/`), ונטען ע"י `CLAUDE.md` בכל סשן. הדפוס: ה-main Claude session **הוא** ה-CEO — לא sub-agent נפרד שנקרא דרך כלי Task. folder form נבחר כדי ש-Claude Code לא יזהה את ה-contract כ-sub-agent אוטומטי (auto-discovery סורקת רק `.md` ישירות תחת `.claude/agents/`, לא תיקיות). הסוכן מקבל כל task ראשון, מבצע parse → classify → plan → execute → synthesize → report, ומפעיל sub-agents (`.claude/agents/<name>.md`, single-file עם frontmatter) ברצף לפי הצורך. דו-לשוני (עברית/אנגלית) עם RTL מלא בעברית. רישום sub-agents (AGT-01..AGT-04) ריק במכוון — ימולא אינקרמנטלית.
+ה-CEO Agent הוא ה-root orchestrator של המערכת multi-agent. ה-contract שלו חי ב-`.claude/agents/ceo/agent.md` (folder form), ונטען ע"י `CLAUDE.md` בכל סשן. הסוכן מבצע parse → classify → plan → execute → synthesize → report, ומפעיל sub-agents ברצף. נכון ל-2026-05-19: AGT-01 יעל (כתיבה) ו-AGT-02 יובל (תמונות) רשומים ופעילים עם routing rules מוגדרות. AGT-03 ו-AGT-04 עדיין TBD.
 
 ## Open Questions
-- 4 ה-sub-agents (AGT-01..AGT-04): שמות, תחומים, וקבצי `.claude/agents/<name>.md` — טרם הוגדרו
-- ה-`Domain` בסעיף Identity של ה-contract: ממתין להחלטה עסקית (כרגע `[TO BE DEFINED]`)
-- ה-`Routing Rules`: בלוק placeholder עד שייווצרו סוכנים — צריך להגדיר if-then rules ברגע ש-AGT-01 קיים
-- מנגנון memory persistence בין סשנים: PRD סעיף 7 מסמן כפתוח
-- שיפור תיעוד `CLAUDE.md`: 2 הצעות פתוחות — תיאור `.claude/agents/` שיציין את ה-CEO ב-folder form, והערה ב-`## CEO Agent Protocol` על הסיבה ל-folder form (ראה רשומת 2026-05-19 — ביקורת תאימות)
+- AGT-03 ו-AGT-04: שמות ותחומים טרם הוגדרו
+- ה-`Domain` בסעיף Identity של ה-contract: עדיין `[TO BE DEFINED]`
+- מנגנון memory persistence בין סשנים: PRD סעיף 7 פתוח
 
 ## Session Log
 
@@ -29,3 +27,9 @@
 - **Decisions:** עץ הקבצים **תואם** את הכוונה — folder form (`ceo/agent.md`) מסתיר את ה-contract מ-auto-discovery של Claude Code (שסורק רק `.md` ישיר ב-`.claude/agents/`), אז ה-CEO לא נרשם כ-Task sub-agent. הוצעו 2 שיפורי תיעוד ל-CLAUDE.md (לא יושמו עדיין, ממתין לאישור משתמש): (1) עדכון שורה 24 כך שהתיאור של `.claude/agents/` יציין שה-CEO contract יושב שם ב-folder form; (2) הוספת משפט הסבר בבלוק `## CEO Agent Protocol` למה folder form ולא single-file.
 - **Notes / Caveats:** לא בוצעו שינויי קבצים פרט לעדכון רשומה זו ב-vault. שתי ההצעות מתועדות גם ב-Open Questions למעקב.
 - **Related:** [[project-overview]], [[claude-configuration]]
+
+### 2026-05-19 — AGT-01 יעל + AGT-02 יובל רשומים, routing rules מוגדרות [shipped]
+- **What was done:** עודכן `ceo/agent.md`: AGT-01 יעל ו-AGT-02 יובל נרשמו בטבלת Sub-Agents. הוגדרו routing rules: יעל ← בקשות תוכן; יובל ← בקשות תמונה; יעל→יובל→CEO ← מאמר עם תמונות.
+- **Decisions:** פרוטוקול ה-handoff בין יעל ליובל עובר דרך CEO (לא direct): יעל מחזירה placeholders, CEO מפעיל יובל, CEO מבצע שילוב. זה שומר על CEO כ-single point of control.
+- **Notes / Caveats:** AGT-03, AGT-04 נשארים TBD. CLAUDE.md עודכן בנפרד עם אותו מידע (redundancy מכוונת — CLAUDE.md הוא human-readable, agent.md הוא machine-contract).
+- **Related:** [[project-overview]], [[yael-agent]], [[yuval-agent]]
