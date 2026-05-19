@@ -1,10 +1,10 @@
 # Project Overview
 
 ## Overview
-מערכת יצירת תוכן מרובת-סוכנים (multi-agent content-creation system). סוכן CEO ראשי מתפקד כאורכסטרטור ומתאם צוות של sub-agents מתמחים. נכון ל-2026-05-19: AGT-01 יעל (משכתבת מאמרים) ו-AGT-02 יובל (יצירת תמונות) פעילים. יעל לוקחת מאמרי גלם מ-`Content/`, משכתבת לפי `yael/style-guide.md`, ושומרת MD+HTML ב-`Output/`. יובל יוצר תמונות דרך OpenAI Images API (`gpt-image-2`). הסוכנים לא מתקשרים ישירות — CEO מתזמן כל אחד בנפרד.
+מערכת יצירת תוכן מרובת-סוכנים (multi-agent content-creation system). סוכן CEO ראשי מתפקד כאורכסטרטור ומתאם צוות של sub-agents מתמחים. נכון ל-2026-05-19: AGT-01 יעל (משכתבת), AGT-02 יובל (יצירת תמונות), ו-AGT-03 חן (מחקר רשת) פעילים. ה-pipeline המלא: חן מחפשת ושומרת ב-`Content/` → CEO מחליט → יעל משכתבת ל-`Output/` → יובל יוצר תמונות נלוות (לפי intent של המשתמש המקורי). הסוכנים לא מתקשרים ישירות — CEO מתזמן כל אחד בנפרד. חן משתמשת ב-WebSearch+WebFetch; יובל ב-OpenAI Images API (`gpt-image-2`); יעל בלי גישה ל-API חיצוני.
 
 ## Open Questions
-- AGT-03 ו-AGT-04: שמות ותחומים טרם הוגדרו
+- AGT-04: שם ותחום טרם הוגדרו
 - מנגנון memory persistence בין סשנים: PRD סעיף 7 פתוח
 
 ## Session Log
@@ -32,3 +32,9 @@
 - **Decisions:** יעל ויובל לא מתקשרים ישירות — CEO מתזמן בנפרד. אם יבקשו מאמר עם תמונות, CEO יפעיל את יעל ואת יובל בקריאות נפרדות ויציג שני outputs. ה-style-guide נשאר placeholder ריק — המשתמש ימלא אותו בנפרד.
 - **Notes / Caveats:** ה-trigger keywords של יעל חופפים חלקית לקודמים (`מאמר`, `תוכן`) אבל הסמנטיקה שונה — יעל לא יוצרת תוכן חדש. בקשות כתיבה מאפס לא ימופו לסוכן קיים.
 - **Related:** [[yael-agent]], [[ceo-agent]]
+
+### 2026-05-19 — חן (AGT-03) נוספה — tri-agent pipeline פעיל [shipped]
+- **What was done:** נוצרה AGT-03 חן (`.claude/agents/chen.md`) — סוכנת מחקר רשת עם כלים `WebSearch, WebFetch, Read, Write, Edit, Glob, Grep`. נוצרה תיקייה `chen/Memory/searches.md` ל-search memory + dedup. CEO contract עודכן: AGT-03 רשום, routing rules הוספו עם composite flows ("find+rewrite", "find+rewrite+images"). CLAUDE.md עודכן: agent team table כולל חן, workflow חדש "מציאת תוכן באינטרנט", directory structure מעודכן.
+- **Decisions:** ה-tri-agent pipeline חן → יעל → יובל מותזמן ע"י CEO בלבד; הסוכנים לא קוראים זה לזה ישירות. ה-trigger לתמונות נקבע מהבקשה המקורית של המשתמש (לא מהפלט של יעל — היא בלי IMAGE_NEEDED placeholders). חן בודקת dedup ב-Grep על ה-memory log לפני כל חיפוש — אם נמצא דומה ב-30 הימים האחרונים, מציעה את הקיים.
+- **Notes / Caveats:** open questions ב-chen-agent.md: paywalls, rate-limits של WebSearch, robots.txt. כרגע 30-day TTL הוא heuristic ידני, לא אוטומטי.
+- **Related:** [[chen-agent]], [[ceo-agent]], [[yael-agent]], [[yuval-agent]]

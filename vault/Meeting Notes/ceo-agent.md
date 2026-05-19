@@ -1,10 +1,10 @@
 # CEO Agent
 
 ## Overview
-ה-CEO Agent הוא ה-root orchestrator של המערכת multi-agent. ה-contract שלו חי ב-`.claude/agents/ceo/agent.md` (folder form), ונטען ע"י `CLAUDE.md` בכל סשן. הסוכן מבצע parse → classify → plan → execute → synthesize → report, ומפעיל sub-agents ברצף. נכון ל-2026-05-19: AGT-01 יעל (כתיבה) ו-AGT-02 יובל (תמונות) רשומים ופעילים עם routing rules מוגדרות. AGT-03 ו-AGT-04 עדיין TBD.
+ה-CEO Agent הוא ה-root orchestrator של המערכת multi-agent. ה-contract שלו חי ב-`.claude/agents/ceo/agent.md` (folder form), ונטען ע"י `CLAUDE.md` בכל סשן. הסוכן מבצע parse → classify → plan → execute → synthesize → report, ומפעיל sub-agents ברצף. נכון ל-2026-05-19: AGT-01 יעל (שכתוב), AGT-02 יובל (תמונות), ו-AGT-03 חן (מחקר רשת) רשומים ופעילים עם routing rules מוגדרות, כולל composite flows. AGT-04 עדיין TBD.
 
 ## Open Questions
-- AGT-03 ו-AGT-04: שמות ותחומים טרם הוגדרו
+- AGT-04: שם ותחום טרם הוגדרו
 - ה-`Domain` בסעיף Identity של ה-contract: עדיין `[TO BE DEFINED]`
 - מנגנון memory persistence בין סשנים: PRD סעיף 7 פתוח
 
@@ -33,3 +33,9 @@
 - **Decisions:** פרוטוקול ה-handoff בין יעל ליובל עובר דרך CEO (לא direct): יעל מחזירה placeholders, CEO מפעיל יובל, CEO מבצע שילוב. זה שומר על CEO כ-single point of control.
 - **Notes / Caveats:** AGT-03, AGT-04 נשארים TBD. CLAUDE.md עודכן בנפרד עם אותו מידע (redundancy מכוונת — CLAUDE.md הוא human-readable, agent.md הוא machine-contract).
 - **Related:** [[project-overview]], [[yael-agent]], [[yuval-agent]]
+
+### 2026-05-19 — AGT-03 חן רשומה + composite routing rules [shipped]
+- **What was done:** עודכן `ceo/agent.md`: AGT-03 חן נרשמה בטבלת Sub-Agents. נוסף routing rule ל-חן (keywords: חפש/מצא/מחקר/research/find/article about). נוסף בלוק "Composite flows" שמגדיר את ה-orchestration לבקשות מורכבות: find+rewrite, find+rewrite+images. הוספה הערה מפורשת שה-image trigger נקבע מהבקשה המקורית של המשתמש — לא מהפלט של יעל (כי יעל הפסיקה להחזיר IMAGE_NEEDED placeholders אחרי ה-pivot).
+- **Decisions:** CEO הוא single point of orchestration — אף sub-agent לא קורא ישירות לאחר. ה-tri-agent pipeline (חן → יעל → יובל) מותזם בקריאות נפרדות. composite flows מוסברים בפירוט ב-routing rules כדי שה-CEO ידע מה לעשות בלי לשאול את המשתמש בכל פעם.
+- **Notes / Caveats:** העברה ל-3 סוכנים פעילים מחייבת זהירות בזיהוי intent — CEO חייב לפרק את הבקשה המקורית למרכיבי "find", "rewrite", "images" לפני ההפעלה.
+- **Related:** [[project-overview]], [[chen-agent]], [[yael-agent]], [[yuval-agent]]
