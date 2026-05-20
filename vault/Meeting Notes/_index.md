@@ -12,3 +12,4 @@
 - [[guy-agent]] — גיא (AGT-04): סוכן QA, שומר הסף האחרון, דוחות ב-`guy/QA_Reports/`, לולאת 3 סבבים
 - [[claude-configuration]] — מבנה .claude/, settings.json, plugin מותקן
 - [[skills-roster]] — רשימת כל ה-skills המותקנות ותיאורן
+- [[visual-documentation]] — קבצי Obsidian Canvas תחת `docs/`: Home, Architecture, Roadmap, Filemap

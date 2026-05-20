@@ -1,0 +1,34 @@
+{
+	"nodes":[
+		{"id":"map-title","type":"text","text":"# 📁 Filemap\n\nKey files and folders grouped by purpose. File nodes (with previews) point at the vault docs; text nodes describe paths that Obsidian hides by default (`.claude/`).","x":-1200,"y":-800,"width":800,"height":140,"color":"4"},
+		{"id":"group-config","type":"text","text":"## ⚙️ Configuration\n\n- `CLAUDE.md` — protocol, routing rules, workflows\n- `.claude/settings.json` — `enabledPlugins`\n- `.claude/settings.local.json` — git allowlist (untracked)\n- `.env.example` → `.env` — `OPENAI_API_KEY`\n- `~/.claude/settings.json` (user-global) — model, theme, plugins","x":-1200,"y":-600,"width":380,"height":260,"color":"6"},
+		{"id":"group-agents","type":"text","text":"## 🤖 Agent Contracts\n\nSingle-file sub-agents (auto-discovered):\n- `.claude/agents/chen.md`\n- `.claude/agents/yael.md`\n- `.claude/agents/yuval.md`\n- `.claude/agents/guy.md`\n\nFolder form (inert — main session):\n- `.claude/agents/ceo/agent.md`\n- `.claude/agents/ceo/_index.md`","x":-780,"y":-600,"width":380,"height":260,"color":"5"},
+		{"id":"group-skills","type":"text","text":"## 🧠 Skills (project-local)\n\n18 skills under `.claude/skills/`. Most relevant:\n- `obsidian-vault-workflow/SKILL.md`\n- `obsidian-markdown/SKILL.md`\n- `obsidian-bases/SKILL.md`\n- `gpt-image-gen/SKILL.md`\n- `brainstorming/SKILL.md`\n- `writing-skills/SKILL.md`\n- `using-superpowers/SKILL.md`\n\n+ TDD, debugging, code-review skills (carryover from Superpowers — candidates for pruning)","x":-360,"y":-600,"width":380,"height":320,"color":"5"},
+		{"id":"group-pipeline","type":"text","text":"## 🔁 Content Pipeline\n\n- `Content/` — raw articles (חן writes, יעל reads)\n- `Output/` — rewritten MD + HTML (יעל writes, גיא audits)\n\nNaming: `<YYYY-MM-DD>-<slug>.md`","x":60,"y":-600,"width":360,"height":220,"color":"3"},
+		{"id":"group-workspaces","type":"text","text":"## 🗂️ Agent Workspaces\n\n- `chen/Memory/searches.md` — dedup log\n- `yael/style-guide.md` — house style (empty)\n- `yael/reference/` — example texts\n- `yuval/reference/` — style images\n- `yuval/outputs/` — PNG + .txt sidecar\n- `guy/QA_Reports/` — dated QA reports","x":460,"y":-600,"width":380,"height":280,"color":"3"},
+		{"id":"group-vault","type":"text","text":"## 📚 Vault — Documentation\n\nFolder: `vault/Meeting Notes/`\n\nFile nodes below open each topic doc.","x":-1200,"y":-280,"width":380,"height":140,"color":"2"},
+		{"id":"vault-overview","type":"file","file":"vault/Meeting Notes/project-overview.md","x":-1200,"y":-120,"width":380,"height":220},
+		{"id":"vault-ceo","type":"file","file":"vault/Meeting Notes/ceo-agent.md","x":-780,"y":-120,"width":380,"height":220},
+		{"id":"vault-chen","type":"file","file":"vault/Meeting Notes/chen-agent.md","x":-360,"y":-120,"width":380,"height":220},
+		{"id":"vault-yael","type":"file","file":"vault/Meeting Notes/yael-agent.md","x":60,"y":-120,"width":380,"height":220},
+		{"id":"vault-yuval","type":"file","file":"vault/Meeting Notes/yuval-agent.md","x":480,"y":-120,"width":380,"height":220},
+		{"id":"vault-guy","type":"file","file":"vault/Meeting Notes/guy-agent.md","x":-1200,"y":140,"width":380,"height":220},
+		{"id":"vault-claude","type":"file","file":"vault/Meeting Notes/claude-configuration.md","x":-780,"y":140,"width":380,"height":220},
+		{"id":"vault-skills","type":"file","file":"vault/Meeting Notes/skills-roster.md","x":-360,"y":140,"width":380,"height":220},
+		{"id":"group-canvas","type":"text","text":"## 🖼️ Visual docs\n\n- `docs/Home.canvas`\n- `docs/Architecture.canvas`\n- `docs/Roadmap.canvas`\n- `docs/Filemap.canvas` *(this canvas)*\n\nObsidian renders `.canvas` directly; the project root contains `.obsidian/` so the whole repo is the vault.","x":60,"y":140,"width":380,"height":220,"color":"1"},
+		{"id":"obsidian-note","type":"text","text":"## 💡 Note on hidden paths\n\nObsidian hides dotted directories like `.claude/` by default. File-link nodes pointing inside `.claude/` may show as broken in the file explorer even though they exist on disk. That's why this canvas uses text nodes for `.claude/` paths and file nodes only for `vault/` content.","x":480,"y":140,"width":380,"height":220,"color":"1"}
+	],
+	"edges":[
+		{"id":"e-config-agents","fromNode":"group-config","fromSide":"right","toNode":"group-agents","toSide":"left","label":"loads"},
+		{"id":"e-agents-skills","fromNode":"group-agents","fromSide":"right","toNode":"group-skills","toSide":"left","label":"uses"},
+		{"id":"e-pipeline-flow","fromNode":"group-pipeline","fromSide":"right","toNode":"group-workspaces","toSide":"left","label":"side-state"},
+		{"id":"e-agents-ceo-doc","fromNode":"group-agents","fromSide":"bottom","toNode":"vault-ceo","toSide":"top","label":"documented in"},
+		{"id":"e-chen-doc","fromNode":"group-agents","fromSide":"bottom","toNode":"vault-chen","toSide":"top"},
+		{"id":"e-yael-doc","fromNode":"group-agents","fromSide":"bottom","toNode":"vault-yael","toSide":"top"},
+		{"id":"e-yuval-doc","fromNode":"group-agents","fromSide":"bottom","toNode":"vault-yuval","toSide":"top"},
+		{"id":"e-guy-doc","fromNode":"group-agents","fromSide":"bottom","toNode":"vault-guy","toSide":"top"},
+		{"id":"e-config-doc","fromNode":"group-config","fromSide":"bottom","toNode":"vault-claude","toSide":"top","label":"documented in"},
+		{"id":"e-skills-doc","fromNode":"group-skills","fromSide":"bottom","toNode":"vault-skills","toSide":"top","label":"documented in"},
+		{"id":"e-overview","fromNode":"group-vault","fromSide":"bottom","toNode":"vault-overview","toSide":"top"}
+	]
+}

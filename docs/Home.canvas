@@ -1,0 +1,25 @@
+{
+	"nodes":[
+		{"id":"home-title","type":"text","text":"# 🏢 AI Content OS\n\nMulti-agent content creation system. **CEO** (main Claude session) orchestrates 4 specialized sub-agents through a content pipeline ending in a mandatory QA loop.\n\n**Stack:** Claude Code · Superpowers plugin · OpenAI Images API · Obsidian vault\n\n*Last updated: 2026-05-20*","x":-300,"y":-100,"width":600,"height":220,"color":"4"},
+		{"id":"link-architecture","type":"file","file":"docs/Architecture.canvas","x":-1000,"y":-480,"width":360,"height":220},
+		{"id":"label-architecture","type":"text","text":"### 🏗️ Architecture\nComponents · agents · data flow · APIs · storage","x":-1000,"y":-240,"width":360,"height":100,"color":"1"},
+		{"id":"link-roadmap","type":"file","file":"docs/Roadmap.canvas","x":-180,"y":-560,"width":360,"height":220},
+		{"id":"label-roadmap","type":"text","text":"### 🗺️ Roadmap\nDone · In Progress · Next · Later","x":-180,"y":-320,"width":360,"height":100,"color":"3"},
+		{"id":"link-filemap","type":"file","file":"docs/Filemap.canvas","x":640,"y":-480,"width":360,"height":220},
+		{"id":"label-filemap","type":"text","text":"### 📁 Filemap\nProject structure grouped by purpose","x":640,"y":-240,"width":360,"height":100,"color":"5"},
+		{"id":"agents-info","type":"text","text":"## 👥 Agents\n\n**CEO** — main session, orchestrator\n\n| ID | Name | Domain |\n|----|------|--------|\n| AGT-01 | יעל | Rewriter |\n| AGT-02 | יובל | Images |\n| AGT-03 | חן | Research |\n| AGT-04 | גיא | QA gatekeeper |\n\nContracts: `.claude/agents/`\nDocs: `vault/Meeting Notes/*-agent.md`","x":-1000,"y":200,"width":460,"height":360,"color":"6"},
+		{"id":"config-info","type":"text","text":"## ⚙️ Configuration\n\n**Project**\n- `CLAUDE.md` — protocol & routing\n- `.claude/settings.json` — `enabledPlugins`\n- `.claude/settings.local.json` — git allowlist\n- `.env` — `OPENAI_API_KEY`\n\n**User-global**\n- `~/.claude/settings.json` — model, theme, plugins\n- Plugins active: `superpowers` (SessionStart hook), `skill-creator`\n\n**Hooks active:** 1 (Superpowers SessionStart)","x":-200,"y":200,"width":600,"height":360,"color":"6"},
+		{"id":"pipeline-info","type":"text","text":"## 🔁 Pipeline at a glance\n\n`חן` → **Content/** → `יעל` → **Output/** → `גיא`\n*(in parallel: `יובל` → yuval/outputs)*\n\nQA loop: 3 rounds max. גיא is the only agent allowed to reject.","x":480,"y":200,"width":460,"height":220,"color":"2"}
+	],
+	"edges":[
+		{"id":"e-arch","fromNode":"home-title","fromSide":"left","toNode":"label-architecture","toSide":"right","label":"system design"},
+		{"id":"e-road","fromNode":"home-title","fromSide":"top","toNode":"label-roadmap","toSide":"bottom","label":"status & plan"},
+		{"id":"e-file","fromNode":"home-title","fromSide":"right","toNode":"label-filemap","toSide":"left","label":"file tree"},
+		{"id":"e-arch-link","fromNode":"label-architecture","fromSide":"top","toNode":"link-architecture","toSide":"bottom"},
+		{"id":"e-road-link","fromNode":"label-roadmap","fromSide":"top","toNode":"link-roadmap","toSide":"bottom"},
+		{"id":"e-file-link","fromNode":"label-filemap","fromSide":"top","toNode":"link-filemap","toSide":"bottom"},
+		{"id":"e-agents","fromNode":"home-title","fromSide":"bottom","toNode":"agents-info","toSide":"top","label":"roster"},
+		{"id":"e-config","fromNode":"home-title","fromSide":"bottom","toNode":"config-info","toSide":"top","label":"settings"},
+		{"id":"e-pipeline","fromNode":"home-title","fromSide":"bottom","toNode":"pipeline-info","toSide":"top","label":"flow"}
+	]
+}
